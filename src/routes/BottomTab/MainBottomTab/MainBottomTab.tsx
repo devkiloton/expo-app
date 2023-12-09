@@ -1,7 +1,7 @@
 import React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BottomNavigation } from "react-native-paper";
+import { BottomNavigation, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CommonActions } from "@react-navigation/native";
 import { FeedStack } from "../../stacks";
@@ -10,10 +10,14 @@ import { Find, Notifications, Profile } from "../../../screens";
 const Tab = createBottomTabNavigator();
 
 export const MainBottomTab = React.memo(() => {
+  const theme = useTheme();
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+      }}
+      sceneContainerStyle={{
+        backgroundColor: theme.colors.background,
       }}
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
