@@ -7,6 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CommonActions } from "@react-navigation/native";
 import { FeedStack } from "../../stacks";
 import { Find, Notifications, Post, Profile } from "../../../screens";
+import styled from "styled-components";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,11 @@ export const MainBottomTab = React.memo(() => (
     }}
     tabBar={({ navigation, state, descriptors, insets }) => (
       <BottomNavigation.Bar
+        keyboardHidesNavigationBar={true}
+        style={{
+          // @ts-ignore => Applied in the browser
+          cursor: "pointer",
+        }}
         navigationState={state}
         safeAreaInsets={insets}
         onTabPress={({ route, preventDefault }) => {
