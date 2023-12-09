@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
-export function Home() {
+export const Home = React.memo(() => {
   const theme = useTheme();
   return (
     <View
@@ -11,7 +11,7 @@ export function Home() {
       <Text>Open up App.tsx to start working on your app!</Text>
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {

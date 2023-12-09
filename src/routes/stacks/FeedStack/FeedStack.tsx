@@ -43,7 +43,7 @@ const Header: FunctionComponent<any> = ({ scene, previous, navigation }) => {
   );
 };
 
-export default function Feed() {
+export const FeedStack = React.memo(() => {
   return (
     <Stack.Navigator
       initialRouteName="Feed"
@@ -60,4 +60,4 @@ export default function Feed() {
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );
-}
+});

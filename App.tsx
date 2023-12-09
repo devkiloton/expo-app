@@ -1,15 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
 import { PaperProvider } from "react-native-paper";
-import Main from "./src/routes/bottom/main/Main";
+import { MainBottomTab } from "./src/routes/BottomTab";
 
 export default function App() {
   return (
     <NavigationContainer>
       <PaperProvider>
-        <Main />
-        <StatusBar style="auto" />
+        <MainBottomTab />
+        <StatusBar style="auto" translucent />
       </PaperProvider>
     </NavigationContainer>
   );
