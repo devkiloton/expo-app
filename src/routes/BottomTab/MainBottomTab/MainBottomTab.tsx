@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text, BottomNavigation } from "react-native-paper";
+import { Text, BottomNavigation, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CommonActions } from "@react-navigation/native";
 import { FeedStack } from "../../stacks";
@@ -71,19 +71,8 @@ export const MainBottomTab = React.memo(() => (
       name="Find"
       component={Find}
       options={{
-        tabBarLabel: "Find",
         tabBarIcon: ({ color, size }) => {
           return <Icon name="magnify" size={size} color={color} />;
-        },
-      }}
-    />
-    <Tab.Screen
-      name="Post"
-      component={Post}
-      options={{
-        tabBarLabel: "Post",
-        tabBarIcon: ({ color, size }) => {
-          return <Icon name="plus" size={size} color={color} />;
         },
       }}
     />
