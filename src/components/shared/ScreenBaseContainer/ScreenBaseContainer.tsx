@@ -10,7 +10,13 @@ export const ScreenBaseContainer: FC<IScreenBaseContainerProps> = React.memo(
   ({ children }) => {
     return (
       // @ts-ignore
-      <Container>{children}</Container>
+      <Container
+        style={{
+          padding: 8,
+        }}
+      >
+        {children}
+      </Container>
     );
   }
 );
