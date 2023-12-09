@@ -1,11 +1,11 @@
 import React from "react";
 import { Text } from "react-native-paper";
-import { SafeAreaView } from "react-native";
+import { ScreenBaseContainer } from "../../components/shared";
 
 export const Notifications = React.memo(() => {
   return (
-    <SafeAreaView>
+    <ScreenBaseContainer>
       <Text>Notifications</Text>
-    </SafeAreaView>
+    </ScreenBaseContainer>
   );
 });
