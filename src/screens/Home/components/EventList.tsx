@@ -1,30 +1,32 @@
 import { useDebounce } from "@uidotdev/usehooks";
-import { Event, SimplePool } from "nostr-tools";
 import React, { useEffect, useRef, useState } from "react";
 import { MetadataPbKey } from "../types/MetadataPbKey";
 import { RELAYS } from "../../../constants/RELAYS";
 import { BinarySearchDescDate } from "../../../utils/BinarySearchDescDate";
-import { Text } from "react-native-paper";
 import { View } from "react-native";
+import { Relay, RelayPool } from "../../../../libs/nostr";
+import { Event } from "nostr-tools";
+import { ListItem } from "./ListItem";
+import { FlatList } from "react-native";
 
 export const EventList = () => {
-  const [pool, setPool] = useState<SimplePool | null>(null);
-  const [eventsImmediate, setEvents] = useState<Event[]>([]);
+  const [pool, setPool] = useState<RelayPool | null>(null);
+  const [metadataPool, setMetadataPool] = useState<RelayPool | null>(null);
+  const [eventsImmediate, setEventsImmediate] = useState<Event[]>([]);
   const [metadata, setMetadata] = useState<Record<string, MetadataPbKey>>({});
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [events] = useDebounce(eventsImmediate, 400);
   const metadataFetched = useRef<Record<string, boolean>>({});
 
   /**
    * Settin up relays pool
    */
   useEffect(() => {
-    console.log(global.TextEncoder);
-    const _pool = new SimplePool();
+    const _pool = RelayPool(RELAYS);
+
     setPool(_pool);
 
     return () => {
-      _pool.close(RELAYS);
+      _pool.close();
     };
   }, []);
 
@@ -33,65 +35,74 @@ export const EventList = () => {
    */
   useEffect(() => {
     if (!pool) return;
-    setEvents([]);
-    const sub = pool.sub(RELAYS, [
-      {
-        kinds: [1],
-        limit: 10,
-        "#t": hashtags.length > 0 ? hashtags : undefined,
-      },
-    ]);
+    setEventsImmediate([]);
+    pool.on("open", (relay: Relay) => {
+      relay.subscribe("subid", { limit: 10, kinds: [1] });
+    });
 
-    sub.on("event", (data: Event) => {
-      setEvents((curr) => BinarySearchDescDate(curr, data));
+    pool.on("eose", (relay: Relay) => {
+      relay.close();
+    });
+
+    pool.on("event", (_relay, _sub_id, ev: Event) => {
+      setEventsImmediate((curr) => BinarySearchDescDate(curr, ev));
     });
 
     return () => {
-      sub.unsub();
+      pool.close();
     };
   }, [hashtags, pool]);
 
   useEffect(() => {
-    if (!pool) return;
+    const _metadataPool = RelayPool(RELAYS);
+    setMetadataPool(_metadataPool);
+    return () => {
+      _metadataPool.close();
+    };
+  }, [eventsImmediate]);
+
+  useEffect(() => {
+    if (!metadataPool || !pool) return;
 
     const pubKeysToFetch = eventsImmediate
       .filter((event) => metadataFetched.current[event.pubkey] !== true)
       .map((event) => event.pubkey);
 
-    pubKeysToFetch.map((pubKey) => (metadataFetched.current[pubKey] = true));
-
-    const sub = pool.sub(RELAYS, [
-      {
+    metadataPool.on("open", (relay) => {
+      relay.subscribe("subid", {
+        limit: 15,
         kinds: [0],
         authors: pubKeysToFetch,
-      },
-    ]);
-
-    sub.on("event", (data: Event) => {
-      const metadata = JSON.parse(data.content) as MetadataPbKey;
-
-      setMetadata((curr) => ({
-        ...curr,
-        [data.pubkey]: metadata,
-      }));
+      });
     });
 
-    // eose = end of stored events
-    sub.on("eose", () => {
-      sub.unsub();
+    metadataPool.on("event", (relay, subid, ev: Event) => {
+      const metadataUser = JSON.parse(ev.content) as MetadataPbKey;
+      setMetadata((curr) => {
+        return {
+          ...curr,
+          [ev.pubkey]: metadataUser,
+        };
+      });
+      metadataFetched.current[ev.pubkey] = true;
     });
 
-    return () => {};
-  }, [events, pool]);
+    metadataPool.on("eose", (relay) => {
+      relay.close();
+    });
+  }, [metadataPool]);
+
   return (
-    <View>
-      {eventsImmediate.map((evento) => {
-        return (
-          <View key={crypto.randomUUID()}>
-            <Text>{evento.content}</Text>
-          </View>
-        );
-      })}
-    </View>
+    <FlatList
+      data={eventsImmediate}
+      keyExtractor={(item) => item.id}
+      ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
+      renderItem={({ item, index }) => (
+        <>
+          {index === 0 && <View style={{ height: 4 }} />}
+          <ListItem event={item} metadata={metadata[item.pubkey]} />
+        </>
+      )}
+    />
   );
 };
