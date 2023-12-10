@@ -1,0 +1,35 @@
+{
+  "name": "nostr",
+  "version": "0.2.8",
+  "description": "nostr lib and cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jb55/nostr-js.git"
+  },
+  "keywords": [
+    "nostr"
+  ],
+  "contributors": [
+    "Melvin Carvalho",
+    "William Casarin <jb55@jb55.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jb55/nostr-js/issues"
+  },
+  "homepage": "https://github.com/jb55/nostr-js",
+  "devDependencies": {
+    "tape": "^5.6.0"
+  },
+  "dependencies": {
+    "crypto-es": "^2.1.0",
+    "expo-crypto": "^12.6.0",
+    "noble-secp256k1": "^1.2.14",
+    "util": "^0.12.5",
+    "ws": "^8.8.1"
+  }
+}
