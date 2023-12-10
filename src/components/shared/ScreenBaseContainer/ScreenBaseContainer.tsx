@@ -25,6 +25,4 @@ const Container = styled(SafeAreaView)<{
   backgroundColor: string;
 }>`
   flex: 1;
-  align-items: center;
-  justify-content: center;
 `;
