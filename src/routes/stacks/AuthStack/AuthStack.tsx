@@ -4,6 +4,7 @@ import { Home } from "../../../screens/Home";
 import { Appbar, useTheme } from "react-native-paper";
 import { MainBottomTab } from "../../BottomTab";
 import { WelcomeScreen } from "../../../screens";
+import { SignUp } from "../../../screens/SignUp";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ export const AuthStack = React.memo(() => {
       }}
     >
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="MainTab" component={MainBottomTab} />
     </Stack.Navigator>
   );
