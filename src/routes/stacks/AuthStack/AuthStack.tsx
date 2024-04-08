@@ -47,8 +47,8 @@ export const AuthStack = React.memo(() => {
         },
       }}
     >
-      {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-      <Stack.Screen name="SignUp" component={SignUp} /> */}
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="MainTab" component={MainBottomTab} />
     </Stack.Navigator>
   );
