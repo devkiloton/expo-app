@@ -6,24 +6,26 @@ import { MainBottomTab } from "../../BottomTab";
 import { WelcomeScreen } from "../../../screens";
 import { SignUp } from "../../../screens/SignUp";
 import { Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
 const Header: FunctionComponent<any> = ({ scene, previous, navigation }) => {
-  const { options } = scene;
-  const title =
-    options.headerTitle !== undefined
-      ? options.headerTitle
-      : options.title !== undefined
-      ? options.title
-      : scene.route.name;
+  const navigate = useNavigation();
+  // const { options } = scene;
+  // const title =
+  //   options.headerTitle !== undefined
+  //     ? options.headerTitle
+  //     : options.title !== undefined
+  //     ? options.title
+  //     : scene.route.name;
 
   return (
     <Appbar.Header>
       {previous ? (
-        <Appbar.BackAction onPress={navigation.pop} />
+        <Appbar.BackAction onPress={() => navigate.goBack()} />
       ) : (
-        <Text>{"Nostr app" /*title*/}</Text>
+        <></>
       )}
     </Appbar.Header>
   );
