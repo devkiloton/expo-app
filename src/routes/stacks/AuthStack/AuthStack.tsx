@@ -5,21 +5,26 @@ import { Appbar, useTheme } from "react-native-paper";
 import { MainBottomTab } from "../../BottomTab";
 import { WelcomeScreen } from "../../../screens";
 import { SignUp } from "../../../screens/SignUp";
+import { Text } from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 const Header: FunctionComponent<any> = ({ scene, previous, navigation }) => {
-  // const { options } = scene;
-  // const title =
-  //   options.headerTitle !== undefined
-  //     ? options.headerTitle
-  //     : options.title !== undefined
-  //     ? options.title
-  //     : scene.route.name;
+  const { options } = scene;
+  const title =
+    options.headerTitle !== undefined
+      ? options.headerTitle
+      : options.title !== undefined
+      ? options.title
+      : scene.route.name;
 
   return (
     <Appbar.Header>
-      {previous ? <Appbar.BackAction onPress={navigation.pop} /> : null}
+      {previous ? (
+        <Appbar.BackAction onPress={navigation.pop} />
+      ) : (
+        <Text>{"Nostr app" /*title*/}</Text>
+      )}
     </Appbar.Header>
   );
 };
@@ -42,8 +47,8 @@ export const AuthStack = React.memo(() => {
         },
       }}
     >
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-      <Stack.Screen name="SignUp" component={SignUp} />
+      {/* <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="SignUp" component={SignUp} /> */}
       <Stack.Screen name="MainTab" component={MainBottomTab} />
     </Stack.Navigator>
   );
